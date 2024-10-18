@@ -30,7 +30,8 @@ def get_daily_weather_summaries():
 
 def save_daily_summary(city, date, summary):
     """Save the daily weather summary to MongoDB."""
-    collection = 'daily_weather_summaries'
+    client = get_mongo_client()
+    db = client.get_database('weather')
 
     daily_summary = {
         "city": city,
@@ -42,7 +43,7 @@ def save_daily_summary(city, date, summary):
     }
 
     try:
-        collection.insert_one(daily_summary)
+        db.get_collection('daily_weather_summaries').insert_one(daily_summary)
         print(f"Daily summary saved for {city} on {date}")
     except Exception as e:
         print(f"Failed to save daily summary for {city}: {e}")
